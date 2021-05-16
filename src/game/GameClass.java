@@ -6,10 +6,12 @@ public class GameClass implements Game {
 
 	private static final double WIN_CHANCE = 0.5; // From 0.0 to 1.0 (Percentage)
 	
+	Player player;
 	int potAmount;
 	int winCounter;
 	
 	public GameClass() {
+		player = new PlayerClass();
 		potAmount = 0;
 		winCounter = 0;
 	}
@@ -20,10 +22,10 @@ public class GameClass implements Game {
 	}
 
 	@Override
-	public boolean betStart(int startAmount, Player p) throws NotEnoughBalanceException {
+	public boolean betStart(int startAmount) throws NotEnoughBalanceException {
 		boolean won;
-		if(p.getBalance() >= startAmount) {
-			p.removeBalance(startAmount);
+		if(player.getBalance() >= startAmount) {
+			player.removeBalance(startAmount);
 			if(winsBet()) {
 				potAmount = startAmount * 2;
 				winCounter += 1;
@@ -74,12 +76,15 @@ public class GameClass implements Game {
 		potAmount = 0;
 	}
 	
+	@Override
+	public int getPlayerBalance() {
+		return player.getBalance();
+	}
+	
 	// -- Private Methods --
 	
 	private boolean winsBet() {
 		return Math.random() < WIN_CHANCE;
 	}
-	
-	
 
 }

@@ -3,18 +3,20 @@ import java.util.Scanner;
 import exceptions.NotEnoughBalanceException;
 import game.Game;
 import game.GameClass;
-import game.Player;
-import game.PlayerClass;
 
 public class Main {
 	
+	private static final String DOUBLE_FAILED = "Failed...";
+	private static final String DOUBLE_SUCCESS = "Doubled!! Pot: %d\n";
+	private static final String POT_IS_EMPTY = "Pot is empty. Insert bet amount: ";
+	private static final String CHECK_BALANCE = "Your balance is: %d\n";
 	private static final String HELP_MESSAGE = "%s - %s\n";
 	private static final String EXIT_MESSAGE = "Thank you for playing!";
 	private static final String UNKNOWN_COMMAND = "Unknown Command...";
 	
 	private enum Command {                          
 		DOUBLE("Bets on doubling the pot. (Must insert ammount if pot is 0!)"),
-		WITHDRAW("Cashes out."),
+		WITHDRAW("Cashes out."), 
 		BALANCE("Checks current balance."), HELP("Runs help command."),
 		EXIT("Exists application."), UNKNOWN("");
 		
@@ -36,7 +38,6 @@ public class Main {
 	private static void runCommands() {
 		Scanner in = new Scanner(System.in);
 		Game game = new GameClass();
-		Player p = new PlayerClass();
 		Command command = getCommand(in);
 		while(!command.equals(Command.EXIT)) {
 			switch(command) {
@@ -44,7 +45,10 @@ public class Main {
 					execHelp();
 					break;
 				case DOUBLE:
-					execDouble(in, game, p);
+					execDouble(in, game);
+					break;
+				case BALANCE:
+					execBalance(game);
 					break;
 				default:
 					System.out.println(UNKNOWN_COMMAND);
@@ -55,17 +59,21 @@ public class Main {
 		in.close();
 	}
 
-	private static void execDouble(Scanner in, Game game, Player p) {
+	private static void execBalance(Game game) {
+		System.out.printf(CHECK_BALANCE, game.getPlayerBalance());
+	}
+
+	private static void execDouble(Scanner in, Game game) {
 		if(game.potIsEmpty()) {
 			try {
 				in.nextLine();
-				System.out.println("Pot is empty. Insert bet amount: ");
+				System.out.println(POT_IS_EMPTY);
 				int startAmount = in.nextInt();
-				if(game.betStart(startAmount, p)) {
-					System.out.printf("Doubled!! Pot: %d\n", game.getCurrentPot());
+				if(game.betStart(startAmount)) {
+					System.out.printf(DOUBLE_SUCCESS, game.getCurrentPot());
 				}
 				else {
-					System.out.println("Failed...");
+					System.out.println(DOUBLE_FAILED);
 				}
 				
 			}
@@ -75,10 +83,10 @@ public class Main {
 		}
 		else {
 			if(game.bet()) {
-				System.out.printf("Doubled!! Pot: %d\n", game.getCurrentPot());
+				System.out.printf(DOUBLE_SUCCESS, game.getCurrentPot());
 			}
 			else {
-				System.out.println("Failed...");
+				System.out.println(DOUBLE_FAILED);
 			}
 		}
 	}
