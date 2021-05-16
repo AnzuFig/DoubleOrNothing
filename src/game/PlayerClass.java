@@ -5,7 +5,7 @@ public class PlayerClass implements Player {
 	int balance;
 	
 	public PlayerClass() {
-		balance = 0;
+		balance = 500;
 	}
 
 	@Override
@@ -16,6 +16,11 @@ public class PlayerClass implements Player {
 	@Override
 	public void removeBalance(int amount) {
 		balance -= amount;
+	}
+
+	@Override
+	public int getBalance() {
+		return balance;
 	}
 
 }

@@ -1,5 +1,11 @@
 import java.util.Scanner;
 
+import exceptions.NotEnoughBalanceException;
+import game.Game;
+import game.GameClass;
+import game.Player;
+import game.PlayerClass;
+
 public class Main {
 	
 	private static final String HELP_MESSAGE = "%s - %s\n";
@@ -29,6 +35,8 @@ public class Main {
 	
 	private static void runCommands() {
 		Scanner in = new Scanner(System.in);
+		Game game = new GameClass();
+		Player p = new PlayerClass();
 		Command command = getCommand(in);
 		while(!command.equals(Command.EXIT)) {
 			switch(command) {
@@ -36,7 +44,8 @@ public class Main {
 					execHelp();
 					break;
 				case DOUBLE:
-					//Make ExpectedBetAmountException
+					execDouble(in, game, p);
+					break;
 				default:
 					System.out.println(UNKNOWN_COMMAND);
 			}
@@ -44,6 +53,34 @@ public class Main {
 		}
 		System.out.println(EXIT_MESSAGE);
 		in.close();
+	}
+
+	private static void execDouble(Scanner in, Game game, Player p) {
+		if(game.potIsEmpty()) {
+			try {
+				in.nextLine();
+				System.out.println("Pot is empty. Insert bet amount: ");
+				int startAmount = in.nextInt();
+				if(game.betStart(startAmount, p)) {
+					System.out.printf("Doubled!! Pot: %d\n", game.getCurrentPot());
+				}
+				else {
+					System.out.println("Failed...");
+				}
+				
+			}
+			catch(NotEnoughBalanceException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		else {
+			if(game.bet()) {
+				System.out.printf("Doubled!! Pot: %d\n", game.getCurrentPot());
+			}
+			else {
+				System.out.println("Failed...");
+			}
+		}
 	}
 
 	private static void execHelp() {
