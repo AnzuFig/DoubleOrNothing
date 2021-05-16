@@ -2,10 +2,11 @@ package game;
 
 public class PlayerClass implements Player {
 
+	private static final int STARTING_BALANCE = 500;
 	int balance;
 	
 	public PlayerClass() {
-		balance = 500;
+		balance = STARTING_BALANCE;
 	}
 
 	@Override

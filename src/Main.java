@@ -20,7 +20,7 @@ public class Main {
 	private enum Command {                          
 		DOUBLE("Bets on doubling the pot. (Must insert ammount if pot is 0!)"),
 		WITHDRAW("Cashes out."), 
-		BALANCE("Checks current balance."), HELP("Runs help command."),
+		BALANCE("Checks current balance."), HELP("Lists all avalible commands and describes what each do."),
 		EXIT("Exists application."), UNKNOWN("");
 		
 		private String description;
@@ -42,7 +42,7 @@ public class Main {
 		Scanner in = new Scanner(System.in);
 		Game game = new GameClass();
 		Command command = Command.UNKNOWN;
-		while(!command.equals(Command.EXIT) && !(game.getPlayerBalance() == 0 && game.potIsEmpty())) {
+		while(!command.equals(Command.EXIT) && !playerLost(game)) {
 			command = getCommand(in);
 			switch(command) {
 				case HELP:
@@ -83,7 +83,7 @@ public class Main {
 		if(game.potIsEmpty()) {
 			try {
 				in.nextLine();
-				System.out.println(POT_IS_EMPTY);
+				System.out.printf(POT_IS_EMPTY);
 				int startAmount = in.nextInt();
 				if(game.betStart(startAmount)) {
 					System.out.printf(DOUBLE_SUCCESS, game.getCurrentPot());
@@ -118,6 +118,10 @@ public class Main {
 			if(c != Command.UNKNOWN)
 			System.out.printf(HELP_MESSAGE, c, c.getDescription());
 		}
+	}
+	
+	private static boolean playerLost(Game game) {
+		return game.getPlayerBalance() == 0 && game.potIsEmpty();
 	}
 
 	private static Command getCommand(Scanner in) {
