@@ -1,11 +1,14 @@
 import java.util.Scanner;
 
 import exceptions.NotEnoughBalanceException;
+import exceptions.PotIsEmptyException;
 import game.Game;
 import game.GameClass;
 
 public class Main {
 	
+	private static final String LOSE_MESSAGE = "You have lost all your money.";
+	private static final String WITHDRAW_SUCCESS = "Congratulation! You current balance is now: %d\n";
 	private static final String DOUBLE_FAILED = "Failed...";
 	private static final String DOUBLE_SUCCESS = "Doubled!! Pot: %d\n";
 	private static final String POT_IS_EMPTY = "Pot is empty. Insert bet amount: ";
@@ -38,8 +41,9 @@ public class Main {
 	private static void runCommands() {
 		Scanner in = new Scanner(System.in);
 		Game game = new GameClass();
-		Command command = getCommand(in);
-		while(!command.equals(Command.EXIT)) {
+		Command command = Command.UNKNOWN;
+		while(!command.equals(Command.EXIT) && !(game.getPlayerBalance() == 0 && game.potIsEmpty())) {
+			command = getCommand(in);
 			switch(command) {
 				case HELP:
 					execHelp();
@@ -47,16 +51,28 @@ public class Main {
 				case DOUBLE:
 					execDouble(in, game);
 					break;
+				case WITHDRAW:
+					execWithdraw(game);
+					break;
 				case BALANCE:
 					execBalance(game);
 					break;
 				default:
 					System.out.println(UNKNOWN_COMMAND);
 			}
-			command = getCommand(in);
 		}
 		System.out.println(EXIT_MESSAGE);
 		in.close();
+	}
+
+	private static void execWithdraw(Game game) {
+		try {
+			game.cashOut();
+			System.out.printf(WITHDRAW_SUCCESS, game.getPlayerBalance());
+		}
+		catch(PotIsEmptyException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	private static void execBalance(Game game) {
@@ -74,6 +90,9 @@ public class Main {
 				}
 				else {
 					System.out.println(DOUBLE_FAILED);
+					if(game.getPlayerBalance() == 0) {
+						System.out.println(LOSE_MESSAGE);
+					}
 				}
 				
 			}
@@ -87,6 +106,9 @@ public class Main {
 			}
 			else {
 				System.out.println(DOUBLE_FAILED);
+				if(game.getPlayerBalance() == 0) {
+					System.out.println(LOSE_MESSAGE);
+				}
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 package game;
 
 import exceptions.NotEnoughBalanceException;
+import exceptions.PotIsEmptyException;
 
 public interface Game {
 	void setPot(int amount);
@@ -9,5 +10,5 @@ public interface Game {
 	boolean potIsEmpty();
 	int getCurrentPot();
 	int getPlayerBalance();
-	void cashOut(Player p);
+	void cashOut() throws PotIsEmptyException;
 }

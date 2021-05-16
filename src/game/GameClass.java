@@ -1,10 +1,11 @@
 package game;
 
 import exceptions.NotEnoughBalanceException;
+import exceptions.PotIsEmptyException;
 
 public class GameClass implements Game {
 
-	private static final double WIN_CHANCE = 0.5; // From 0.0 to 1.0 (Percentage)
+	private static final double WIN_CHANCE = 50; // From 0 to 100 (Percentage)
 	
 	Player player;
 	int potAmount;
@@ -71,9 +72,14 @@ public class GameClass implements Game {
 	}
 
 	@Override
-	public void cashOut(Player p) {
-		p.addBalance(potAmount);
-		potAmount = 0;
+	public void cashOut() throws PotIsEmptyException {
+		if(!potIsEmpty()) {
+			player.addBalance(potAmount);
+			potAmount = 0;
+		}
+		else {
+			throw new PotIsEmptyException();
+		}
 	}
 	
 	@Override
@@ -84,7 +90,7 @@ public class GameClass implements Game {
 	// -- Private Methods --
 	
 	private boolean winsBet() {
-		return Math.random() < WIN_CHANCE;
+		return Math.random() < WIN_CHANCE / 100;
 	}
 
 }
