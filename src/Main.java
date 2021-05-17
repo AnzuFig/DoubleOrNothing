@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
 
 import exceptions.NotEnoughBalanceException;
@@ -36,6 +39,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		runCommands();
+		//visualizeRNG();
 	}
 	
 	private static void runCommands() {
@@ -131,6 +135,51 @@ public class Main {
 		catch(IllegalArgumentException e) {
 			return Command.UNKNOWN;
 		}
+	}
+	
+	// -----For debbuging purposes-----
+	
+	private static void visualizeRNG() {
+		
+		final int TRIES = 1000;
+		final int JACKPOT_NUM = 10;
+		
+		List<Boolean> wons = new ArrayList<Boolean>(); 
+		List<Double> chances = new ArrayList<Double>(); 
+		for(int i = 0; i < TRIES; i++) {
+			double chance = Math.random();
+			boolean won = chance > 0.5;
+			wons.add(won);
+			chances.add(chance);
+			}
+		Iterator<Double> it = chances.iterator();
+		List<Double> jackpots = new ArrayList<Double>();
+		int counter = 0;
+		int jackCounter = 0;
+		while(it.hasNext()) {
+			double next = it.next();
+			if(next > 0.5) {
+				counter++;
+				jackpots.add(next);
+				if(counter >= JACKPOT_NUM) {
+					counter = 0;
+					jackCounter++;
+					System.out.println("--------------------");
+					Iterator<Double> tempIt = jackpots.iterator();
+					while(tempIt.hasNext()) {
+						System.out.printf("JACKPOT: %f\n", tempIt.next());
+					}
+					jackpots.clear();
+					System.out.println("--------------------");
+				}
+			}
+			else {
+				System.out.println(next);
+				counter = 0;
+				jackpots.clear();
+			}
+		}
+		System.out.printf("Jackpots: %d", jackCounter);
 	}
 
 }
