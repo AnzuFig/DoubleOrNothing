@@ -13,14 +13,14 @@ public class Main {
 	private static final String DOUBLE_SUCCESS = "Doubled!! Pot: %d\n";
 	private static final String POT_IS_EMPTY = "Pot is empty. Insert bet amount: ";
 	private static final String CHECK_BALANCE = "Your balance is: %d\n";
-	private static final String HELP_MESSAGE = "%s - %s\n";
+	private static final String HELP_MESSAGE = "%s: %s\n";
 	private static final String EXIT_MESSAGE = "Thank you for playing!";
 	private static final String UNKNOWN_COMMAND = "Unknown Command...";
 	
 	private enum Command {                          
-		DOUBLE("Bets on doubling the pot. (Must insert ammount if pot is 0!)"),
-		WITHDRAW("Cashes out."), 
-		BALANCE("Checks current balance."), HELP("Lists all avalible commands and describes what each do."),
+		D("Double - Bets on doubling the pot. (Must insert ammount if pot is 0!)"),
+		W("Withdraw - Cashes out."), 
+		B("Balance - Checks current balance."), HELP("Lists all avalible commands and describes what each do."),
 		EXIT("Exists application."), UNKNOWN("");
 		
 		private String description;
@@ -48,13 +48,13 @@ public class Main {
 				case HELP:
 					execHelp();
 					break;
-				case DOUBLE:
+				case D:
 					execDouble(in, game);
 					break;
-				case WITHDRAW:
+				case W:
 					execWithdraw(game);
 					break;
-				case BALANCE:
+				case B:
 					execBalance(game);
 					break;
 				default:
