@@ -8,7 +8,7 @@ They can place a bet and try to double that amount and then keep doubling until 
 The player has a 50% chance of doubling and loses the game if their balance gets to zero.
 
 ### Commands
-- **D**: Double - Bets on doubling the pot. If the pot is currently zero, it will ask the player to insert an amount.
+- **D**: Double - Bets on doubling the pot. If the pot is currently zero, it will ask the player to insert an amount to bet.
 - **W**: Withdraw - Cashes out.
 - **B**: Balance - Checks player's current balance.
 - **HELP**: Lists all available commands and describes what each do.
