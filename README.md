@@ -1,14 +1,14 @@
-# DoubleOrNothing
+# Double Or Nothing
 
 Java console game based on the [*Double Or Nothing*](https://steamcommunity.com/sharedfiles/filedetails/?id=1174019751) mini-game found in Garry's Mod servers, originally developed by *Code Blue*.
 
-## How it Works
+## How it works
 The player starts off with 500$.
 They can place a bet and try to double that amount and then keep doubling until they either lose or cash out.
 The player has a 50% chance of doubling and loses the game if their balance gets to zero.
 
 ### Commands
-- **D**: Double - Bets on doubling the pot. If the pot is zero, it will ask the player to insert an amount to bet.
+- **D**: Double - Bets on doubling the pot. If the pot is zero, it asks the player to insert an amount to bet.
 - **W**: Withdraw - Cashes out.
 - **B**: Balance - Checks player's current balance.
 - **HELP**: Lists all available commands and describes what each do.
